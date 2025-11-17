@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 
 export default function Testimonials() {
   const [currentTestimonial, setCurrentTestimonial] = useState(0);
+  const [slidesPerView, setSlidesPerView] = useState(3);
 
   const testimonials = [
     {
@@ -54,14 +55,35 @@ export default function Testimonials() {
     },
   ];
 
+  // Handle responsive slides per view
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth < 640) {
+        setSlidesPerView(1);
+      } else if (window.innerWidth < 1024) {
+        setSlidesPerView(2);
+      } else {
+        setSlidesPerView(3);
+      }
+    };
+
+    handleResize();
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
   // Auto-slide testimonials
   useEffect(() => {
+    const maxSlides = Math.ceil(testimonials.length / slidesPerView);
     const timer = setInterval(() => {
-      setCurrentTestimonial((prev) => (prev + 1) % 3);
+      setCurrentTestimonial((prev) => (prev + 1) % maxSlides);
     }, 3000);
 
     return () => clearInterval(timer);
-  }, []);
+  }, [slidesPerView, testimonials.length]);
+
+  const maxSlides = Math.ceil(testimonials.length / slidesPerView);
+  const translatePercentage = 100 / slidesPerView;
 
   return (
     <section className="py-20 px-4 sm:px-6 lg:px-8 bg-slate-950 relative overflow-hidden">
@@ -90,15 +112,18 @@ export default function Testimonials() {
             <div
               className="flex transition-transform duration-700 ease-out"
               style={{
-                transform: `translateX(-${currentTestimonial * 33.333}%)`,
+                transform: `translateX(-${
+                  currentTestimonial * translatePercentage
+                }%)`,
               }}
             >
               {testimonials.map((testimonial, i) => (
                 <div
                   key={i}
-                  className="w-full sm:w-1/2 lg:w-1/3 flex-shrink-0 px-3"
+                  className="flex-shrink-0 px-3"
+                  style={{ width: `${translatePercentage}%` }}
                 >
-                  <div className="bg-gradient-to-br from-slate-800/80 to-slate-900/80 backdrop-blur-sm border border-slate-700/50 rounded-2xl p-8 h-full transition-all duration-500 group hover:border-cyan-500/50 hover:scale-[1.02] hover:shadow-xl hover:shadow-cyan-500/10">
+                  <div className="bg-gradient-to-br from-slate-800/80 to-slate-900/80 backdrop-blur-sm border border-slate-700/50 rounded-2xl p-6 sm:p-8 h-full transition-all duration-500 group hover:border-cyan-500/50 hover:scale-[1.02] hover:shadow-xl hover:shadow-cyan-500/10">
                     {/* Avatar */}
                     <div className="flex justify-center mb-6">
                       <div className="relative">
@@ -112,13 +137,13 @@ export default function Testimonials() {
                     </div>
 
                     {/* Review Text */}
-                    <p className="text-slate-400 text-center mb-8 leading-relaxed text-sm transition-colors duration-300 group-hover:text-slate-300">
+                    <p className="text-slate-400 text-center mb-6 sm:mb-8 leading-relaxed text-sm transition-colors duration-300 group-hover:text-slate-300 min-h-[100px] sm:min-h-[120px]">
                       {testimonial.review}
                     </p>
 
                     {/* Name and Company */}
                     <div className="text-center border-t border-slate-700/50 pt-4 transition-colors duration-300 group-hover:border-cyan-500/30">
-                      <h4 className="font-bold text-white mb-1 transition-colors duration-300 group-hover:text-cyan-400">
+                      <h4 className="font-bold text-white mb-1 transition-colors duration-300 group-hover:text-cyan-400 text-sm sm:text-base">
                         {testimonial.name}
                       </h4>
                       <p className="text-cyan-400 text-xs font-semibold italic opacity-80 transition-opacity duration-300 group-hover:opacity-100">
@@ -135,8 +160,8 @@ export default function Testimonials() {
           </div>
 
           {/* Navigation Dots */}
-          <div className="flex justify-center items-center space-x-2 mt-12">
-            {[0, 1, 2].map((dotIndex) => (
+          <div className="flex justify-center items-center space-x-2 mt-8 sm:mt-12">
+            {Array.from({ length: maxSlides }).map((_, dotIndex) => (
               <button
                 key={dotIndex}
                 onClick={() => setCurrentTestimonial(dotIndex)}
