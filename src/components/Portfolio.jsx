@@ -1,7 +1,10 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 import { ArrowRight } from "lucide-react";
 
 export default function Portfolio() {
+  const navigate = useNavigate();
+
   const portfolioItems = [
     {
       title: "E-commerce Revolution",
@@ -9,6 +12,7 @@ export default function Portfolio() {
       color: "from-blue-600 to-cyan-500",
       image:
         "https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800&q=80",
+      slug: "ecommerce-revolution",
     },
     {
       title: "Brand Transformation",
@@ -16,6 +20,7 @@ export default function Portfolio() {
       color: "from-cyan-600 to-blue-500",
       image:
         "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=800&q=80",
+      slug: "brand-transformation",
     },
     {
       title: "Social Campaign",
@@ -23,6 +28,7 @@ export default function Portfolio() {
       color: "from-blue-500 to-indigo-600",
       image:
         "https://images.unsplash.com/photo-1611162617474-5b21e879e113?w=800&q=80",
+      slug: "social-campaign",
     },
     {
       title: "Digital Strategy",
@@ -30,8 +36,14 @@ export default function Portfolio() {
       color: "from-cyan-500 to-teal-600",
       image:
         "https://images.unsplash.com/photo-1551434678-e076c223a692?w=800&q=80",
+      slug: "digital-strategy",
     },
   ];
+
+  const handleViewProject = (slug) => {
+    navigate(`/portfolio/${slug}`);
+    window.scrollTo(0, 0);
+  };
 
   return (
     <section
@@ -58,6 +70,7 @@ export default function Portfolio() {
               key={i}
               className="group relative overflow-hidden rounded-xl aspect-video cursor-pointer"
               style={{ animationDelay: `${i * 150}ms` }}
+              onClick={() => handleViewProject(item.slug)}
             >
               <img
                 src={item.image}

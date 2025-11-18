@@ -1,4 +1,5 @@
-import React from "react";
+import React, { useRef, useEffect, useState } from "react";
+import { useInView } from "framer-motion";
 
 export default function Experience() {
   const skills = [
@@ -29,30 +30,7 @@ export default function Experience() {
             {/* Skills Progress Bars */}
             <div className="space-y-6 pt-4">
               {skills.map((skill, i) => (
-                <div
-                  key={i}
-                  className="space-y-2"
-                  style={{ animationDelay: `${i * 100}ms` }}
-                >
-                  <div className="flex items-center justify-between">
-                    <span className="font-semibold text-white">
-                      {skill.name}
-                    </span>
-                    <span className="font-bold text-cyan-400">
-                      {skill.percent}%
-                    </span>
-                  </div>
-                  <div className="h-2 bg-slate-800 rounded-full overflow-hidden">
-                    <div
-                      className="h-full bg-gradient-to-r from-purple-600 via-pink-500 to-cyan-400 rounded-full transition-all duration-1000 ease-out"
-                      style={{
-                        width: `${skill.percent}%`,
-                        animation: `progress 2s ease-out forwards`,
-                        animationDelay: `${i * 200}ms`,
-                      }}
-                    ></div>
-                  </div>
-                </div>
+                <SkillBar key={i} skill={skill} index={i} />
               ))}
             </div>
           </div>
@@ -77,5 +55,37 @@ export default function Experience() {
         </div>
       </div>
     </section>
+  );
+}
+
+/* -----------------------------------------------------
+   SKILL PROGRESS BAR WITH ANIMATION ON VIEW
+------------------------------------------------------ */
+function SkillBar({ skill, index }) {
+  const ref = useRef(null);
+  const isInView = useInView(ref, { once: true });
+  const [width, setWidth] = useState("0%");
+
+  useEffect(() => {
+    if (isInView) {
+      setTimeout(() => {
+        setWidth(`${skill.percent}%`);
+      }, index * 200); // stagger animation
+    }
+  }, [isInView, skill.percent, index]);
+
+  return (
+    <div ref={ref} className="space-y-2">
+      <div className="flex items-center justify-between">
+        <span className="font-semibold text-white">{skill.name}</span>
+        <span className="font-bold text-cyan-400">{skill.percent}%</span>
+      </div>
+      <div className="h-2 bg-slate-800 rounded-full overflow-hidden">
+        <div
+          className="h-full bg-gradient-to-r from-cyan-500 to-blue-600 rounded-full transition-all duration-1000 ease-out"
+          style={{ width }}
+        ></div>
+      </div>
+    </div>
   );
 }

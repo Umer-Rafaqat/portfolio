@@ -1,6 +1,14 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 
 export default function CTA() {
+  const navigate = useNavigate();
+
+  const handleScheduleClick = () => {
+    navigate("/contact");
+    window.scrollTo(0, 0);
+  };
+
   return (
     <section className="py-20 px-4 sm:px-6 lg:px-8">
       <div className="max-w-4xl mx-auto text-center">
@@ -18,7 +26,10 @@ export default function CTA() {
               Let's discuss how we can help you achieve your digital marketing
               goals
             </p>
-            <button className="group bg-white text-blue-600 px-8 py-4 rounded-lg font-semibold hover:bg-slate-100 transition-all duration-300 relative overflow-hidden">
+            <button
+              onClick={handleScheduleClick}
+              className="group bg-white text-blue-600 px-8 py-4 rounded-lg font-semibold hover:bg-slate-100 transition-all duration-300 relative overflow-hidden cursor-pointer"
+            >
               <span className="relative z-10">Schedule a Consultation</span>
               <div className="absolute inset-0 bg-cyan-100 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left"></div>
             </button>

@@ -1,15 +1,23 @@
 import React, { useState, useEffect } from "react";
-import { Menu, X, ChevronRight } from "lucide-react";
+import { Menu, X } from "lucide-react";
+import { Link, useNavigate } from "react-router-dom";
 
 export default function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 50);
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
+
+  const handleContactClick = (e) => {
+    e.preventDefault();
+    navigate("/contact");
+    window.scrollTo(0, 0);
+  };
 
   return (
     <nav
@@ -21,7 +29,7 @@ export default function Navbar() {
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-20">
-          <div className="flex items-center space-x-2 group">
+          <Link to="/" className="flex items-center space-x-2 group">
             <div className="relative">
               <div className="w-10 h-10 bg-gradient-to-br from-cyan-500 to-blue-600 rounded-lg flex items-center justify-center font-bold text-xl transform group-hover:scale-110 transition-transform duration-300">
                 S
@@ -29,23 +37,49 @@ export default function Navbar() {
               <div className="absolute inset-0 bg-gradient-to-br from-cyan-500 to-blue-600 rounded-lg blur-lg opacity-0 group-hover:opacity-50 transition-opacity duration-300"></div>
             </div>
             <span className="text-2xl font-bold">SMJ Solutions</span>
-          </div>
+          </Link>
 
           <div className="hidden md:flex items-center space-x-8">
-            {["Home", "Services", "Portfolio", "About", "Contact"].map(
-              (item, i) => (
-                <a
-                  key={i}
-                  href={`#${item.toLowerCase()}`}
-                  className="relative hover:text-cyan-400 transition-colors duration-300 group py-2"
-                  style={{ animationDelay: `${i * 100}ms` }}
-                >
-                  {item}
-                  <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-gradient-to-r from-cyan-500 to-blue-600 group-hover:w-full transition-all duration-300"></span>
-                </a>
-              )
-            )}
-            <button className="relative bg-gradient-to-r from-cyan-500 to-blue-600 px-6 py-2.5 rounded-lg font-medium overflow-hidden group">
+            <Link
+              to="/"
+              className="relative hover:text-cyan-400 transition-colors duration-300 group py-2"
+            >
+              Home
+              <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-gradient-to-r from-cyan-500 to-blue-600 group-hover:w-full transition-all duration-300"></span>
+            </Link>
+            <a
+              href="#services"
+              className="relative hover:text-cyan-400 transition-colors duration-300 group py-2"
+            >
+              Services
+              <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-gradient-to-r from-cyan-500 to-blue-600 group-hover:w-full transition-all duration-300"></span>
+            </a>
+            <a
+              href="#portfolio"
+              className="relative hover:text-cyan-400 transition-colors duration-300 group py-2"
+            >
+              Portfolio
+              <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-gradient-to-r from-cyan-500 to-blue-600 group-hover:w-full transition-all duration-300"></span>
+            </a>
+            <a
+              href="#about"
+              className="relative hover:text-cyan-400 transition-colors duration-300 group py-2"
+            >
+              About
+              <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-gradient-to-r from-cyan-500 to-blue-600 group-hover:w-full transition-all duration-300"></span>
+            </a>
+            <a
+              href="/contact"
+              onClick={handleContactClick}
+              className="relative hover:text-cyan-400 transition-colors duration-300 group py-2"
+            >
+              Contact
+              <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-gradient-to-r from-cyan-500 to-blue-600 group-hover:w-full transition-all duration-300"></span>
+            </a>
+            <button
+              onClick={handleContactClick}
+              className="relative bg-gradient-to-r from-cyan-500 to-blue-600 px-6 py-2.5 rounded-lg font-medium overflow-hidden group"
+            >
               <span className="relative z-10">Get Started</span>
               <div className="absolute inset-0 bg-gradient-to-r from-blue-600 to-cyan-500 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
               <div className="absolute inset-0 bg-white/20 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-700 skew-x-12"></div>
@@ -70,19 +104,51 @@ export default function Navbar() {
         }`}
       >
         <div className="px-4 py-6 space-y-4">
-          {["Home", "Services", "Portfolio", "About", "Contact"].map(
-            (item, i) => (
-              <a
-                key={i}
-                href={`#${item.toLowerCase()}`}
-                className="block hover:text-cyan-400 transition transform hover:translate-x-2 duration-300"
-                style={{ animationDelay: `${i * 50}ms` }}
-              >
-                {item}
-              </a>
-            )
-          )}
-          <button className="w-full bg-gradient-to-r from-cyan-500 to-blue-600 px-6 py-2.5 rounded-lg font-medium">
+          <Link
+            to="/"
+            className="block hover:text-cyan-400 transition transform hover:translate-x-2 duration-300"
+            onClick={() => setIsMenuOpen(false)}
+          >
+            Home
+          </Link>
+          <a
+            href="#services"
+            className="block hover:text-cyan-400 transition transform hover:translate-x-2 duration-300"
+            onClick={() => setIsMenuOpen(false)}
+          >
+            Services
+          </a>
+          <a
+            href="#portfolio"
+            className="block hover:text-cyan-400 transition transform hover:translate-x-2 duration-300"
+            onClick={() => setIsMenuOpen(false)}
+          >
+            Portfolio
+          </a>
+          <a
+            href="#about"
+            className="block hover:text-cyan-400 transition transform hover:translate-x-2 duration-300"
+            onClick={() => setIsMenuOpen(false)}
+          >
+            About
+          </a>
+          <a
+            href="/contact"
+            onClick={(e) => {
+              handleContactClick(e);
+              setIsMenuOpen(false);
+            }}
+            className="block hover:text-cyan-400 transition transform hover:translate-x-2 duration-300"
+          >
+            Contact
+          </a>
+          <button
+            onClick={(e) => {
+              handleContactClick(e);
+              setIsMenuOpen(false);
+            }}
+            className="w-full bg-gradient-to-r from-cyan-500 to-blue-600 px-6 py-2.5 rounded-lg font-medium"
+          >
             Get Started
           </button>
         </div>

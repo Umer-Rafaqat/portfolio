@@ -1,29 +1,41 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 import { Target, TrendingUp, Users, Award, ArrowRight } from "lucide-react";
 
 export default function Services() {
+  const navigate = useNavigate();
+
   const services = [
     {
       icon: <Target className="w-8 h-8" />,
       title: "Digital Strategy",
       desc: "Data-driven strategies to dominate your market",
+      slug: "digital-strategy",
     },
     {
       icon: <TrendingUp className="w-8 h-8" />,
       title: "SEO & Marketing",
       desc: "Boost visibility and drive organic growth",
+      slug: "seo-marketing",
     },
     {
       icon: <Users className="w-8 h-8" />,
       title: "Social Media",
       desc: "Build engaged communities that convert",
+      slug: "social-media",
     },
     {
       icon: <Award className="w-8 h-8" />,
       title: "Brand Identity",
       desc: "Create memorable brands that stand out",
+      slug: "brand-identity",
     },
   ];
+
+  const handleLearnMore = (slug) => {
+    navigate(`/services/${slug}`);
+    window.scrollTo(0, 0);
+  };
 
   return (
     <section id="services" className="py-20 px-4 sm:px-6 lg:px-8">
@@ -57,7 +69,10 @@ export default function Services() {
                   {service.title}
                 </h3>
                 <p className="text-slate-400 mb-4">{service.desc}</p>
-                <button className="text-cyan-400 flex items-center space-x-2 group-hover:space-x-3 transition-all">
+                <button
+                  onClick={() => handleLearnMore(service.slug)}
+                  className="text-cyan-400 flex items-center space-x-2 group-hover:space-x-3 transition-all"
+                >
                   <span>Learn More</span>
                   <ArrowRight className="w-4 h-4 transform group-hover:translate-x-1 transition-transform" />
                 </button>
