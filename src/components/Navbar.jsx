@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from "react";
 import { Menu, X } from "lucide-react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 
 export default function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const navigate = useNavigate();
+  const location = useLocation();
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 50);
@@ -19,6 +20,45 @@ export default function Navbar() {
     window.scrollTo(0, 0);
   };
 
+  const handleAboutClick = (e) => {
+    e.preventDefault();
+    navigate("/about");
+    window.scrollTo(0, 0);
+  };
+
+  const handleServicesClick = (e) => {
+    e.preventDefault();
+    if (location.pathname !== "/") {
+      navigate("/#services");
+    } else {
+      const element = document.getElementById("services");
+      if (element) {
+        element.scrollIntoView({ behavior: "smooth" });
+      }
+    }
+    setIsMenuOpen(false);
+  };
+
+  const handlePortfolioClick = (e) => {
+    e.preventDefault();
+    if (location.pathname !== "/") {
+      navigate("/#portfolio");
+    } else {
+      const element = document.getElementById("portfolio");
+      if (element) {
+        element.scrollIntoView({ behavior: "smooth" });
+      }
+    }
+    setIsMenuOpen(false);
+  };
+
+  const handleHomeClick = (e) => {
+    e.preventDefault();
+    navigate("/");
+    window.scrollTo(0, 0);
+    setIsMenuOpen(false);
+  };
+
   return (
     <nav
       className={`fixed w-full z-50 transition-all duration-500 ${
@@ -29,7 +69,11 @@ export default function Navbar() {
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-20">
-          <Link to="/" className="flex items-center space-x-2 group">
+          <Link
+            to="/"
+            onClick={() => window.scrollTo(0, 0)}
+            className="flex items-center space-x-2 group"
+          >
             <div className="relative">
               <div className="w-10 h-10 bg-gradient-to-br from-cyan-500 to-blue-600 rounded-lg flex items-center justify-center font-bold text-xl transform group-hover:scale-110 transition-transform duration-300">
                 S
@@ -40,15 +84,17 @@ export default function Navbar() {
           </Link>
 
           <div className="hidden md:flex items-center space-x-8">
-            <Link
-              to="/"
+            <a
+              href="/"
+              onClick={handleHomeClick}
               className="relative hover:text-cyan-400 transition-colors duration-300 group py-2"
             >
               Home
               <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-gradient-to-r from-cyan-500 to-blue-600 group-hover:w-full transition-all duration-300"></span>
-            </Link>
+            </a>
             <a
               href="#services"
+              onClick={handleServicesClick}
               className="relative hover:text-cyan-400 transition-colors duration-300 group py-2"
             >
               Services
@@ -56,13 +102,15 @@ export default function Navbar() {
             </a>
             <a
               href="#portfolio"
+              onClick={handlePortfolioClick}
               className="relative hover:text-cyan-400 transition-colors duration-300 group py-2"
             >
               Portfolio
-              <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-gradient-to-r from-cyan-500 to-blue-600 group-hover:w-full transition-all duration-300"></span>
+              <span className="absolute bottom-0 left-0 w-0.5 bg-gradient-to-r from-cyan-500 to-blue-600 group-hover:w-full transition-all duration-300"></span>
             </a>
             <a
-              href="#about"
+              href="/about"
+              onClick={handleAboutClick}
               className="relative hover:text-cyan-400 transition-colors duration-300 group py-2"
             >
               About
@@ -104,31 +152,34 @@ export default function Navbar() {
         }`}
       >
         <div className="px-4 py-6 space-y-4">
-          <Link
-            to="/"
+          <a
+            href="/"
+            onClick={handleHomeClick}
             className="block hover:text-cyan-400 transition transform hover:translate-x-2 duration-300"
-            onClick={() => setIsMenuOpen(false)}
           >
             Home
-          </Link>
+          </a>
           <a
             href="#services"
+            onClick={handleServicesClick}
             className="block hover:text-cyan-400 transition transform hover:translate-x-2 duration-300"
-            onClick={() => setIsMenuOpen(false)}
           >
             Services
           </a>
           <a
             href="#portfolio"
+            onClick={handlePortfolioClick}
             className="block hover:text-cyan-400 transition transform hover:translate-x-2 duration-300"
-            onClick={() => setIsMenuOpen(false)}
           >
             Portfolio
           </a>
           <a
-            href="#about"
+            href="/about"
+            onClick={(e) => {
+              handleAboutClick(e);
+              setIsMenuOpen(false);
+            }}
             className="block hover:text-cyan-400 transition transform hover:translate-x-2 duration-300"
-            onClick={() => setIsMenuOpen(false)}
           >
             About
           </a>

@@ -1,6 +1,7 @@
 import React from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Home from "./components/Home";
+import About from "./components/About";
 import Contact from "./components/Contact";
 import ServiceDetail from "./components/ServiceDetail";
 import PortfolioDetail from "./components/PortfolioDetail";
@@ -11,6 +12,7 @@ function App() {
       <div className="min-h-screen bg-slate-950 text-white">
         <Routes>
           <Route path="/" element={<Home />} />
+          <Route path="/about" element={<About />} />
           <Route path="/contact" element={<Contact />} />
           <Route path="/services/:serviceSlug" element={<ServiceDetail />} />
           <Route path="/portfolio/:projectSlug" element={<PortfolioDetail />} />
